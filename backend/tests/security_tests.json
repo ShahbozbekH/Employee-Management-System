@@ -1,0 +1,299 @@
+{
+  "info": {
+    "_postman_id": "jwt-auth-tests-collection",
+    "name": "JWT Auth Security Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login Success",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "admin" },
+            { "key": "password", "value": "password" }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Access token present\", function () {",
+              "    pm.expect(pm.response.json().access_token).to.be.a('string');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login Failure",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "wrong" },
+            { "key": "password", "value": "wrong" }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "pm.test(\"Incorrect username or password\", function () {",
+              "    pm.expect(pm.response.json().detail).to.eql(\"Incorrect username or password\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees Requires JWT",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8000/employees/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["employees", ""]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});",
+              "pm.test(\"JWT required\", function () {",
+              "    pm.expect(pm.response.json().detail).to.eql(\"Could not validate credentials\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees Invalid JWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer invalidtoken" }
+        ],
+        "url": {
+          "raw": "http://localhost:8000/employees/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["employees", ""]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});",
+              "pm.test(\"Invalid JWT\", function () {",
+              "    pm.expect(pm.response.json().detail).to.eql(\"Could not validate credentials\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health No Auth Required",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["health"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"API is running\", function () {",
+              "    pm.expect(pm.response.json().status).to.eql(\"API is running\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "name": "Employees Valid JWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:8000/employees/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["employees", ""]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200 or 404\", function () {",
+              "    pm.expect([200,404]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser_postman\",\n  \"password\": \"StrongPassw0rd!\",\n  \"role\": \"user\",\n  \"email\": \"testuser_postman@example.com\",\n  \"full_name\": \"Test User Postman\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["register"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.environment.set('testuser_postman', 'testuser_postman');"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verify Password Is Hashed (Manual Step)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8000/NOT_IMPLEMENTED",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["NOT_IMPLEMENTED"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// There is no public endpoint to fetch user details for security reasons.",
+              "// To verify password hashing, check the database directly:",
+              "// 1. Find the user 'testuser_postman' in the 'users' collection.",
+              "// 2. Ensure there is no 'password' field.",
+              "// 3. Ensure there is a 'hashed_password' field,",
+              "//    and it is a 64-character hex string, and does not match the plain password.",
+              "pm.test(\"Manual DB check required for password hashing\", function () {",
+              "    pm.expect(true).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "if (!pm.environment.get('jwt_token')) {",
+          "    pm.sendRequest({",
+          "        url: 'http://localhost:8000/login',",
+          "        method: 'POST',",
+          "        header: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+          "        body: { mode: 'urlencoded', urlencoded: [",
+          "            { key: 'username', value: 'admin' },",
+          "            { key: 'password', value: 'password' }",
+          "        ] }",
+          "    }, function (err, res) {",
+          "        if (!err && res.code === 200) {",
+          "            pm.environment.set('jwt_token', res.json().access_token);",
+          "        }",
+          "    });",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}

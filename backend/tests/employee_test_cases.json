@@ -1,0 +1,34 @@
+[
+    {
+        "employee_id": "E002",
+        "name": "Jane Doe",
+        "email": "jane.doe@example.com",
+        "department": "Operations",
+        "position": "Project Manager",
+        "status": "Active"
+    },
+    {
+        "employee_id": "E001",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "department": "IT",
+        "position": "Developer",
+        "status": "Active"
+    },
+    {
+        "employee_id": "E004",
+        "name": "Bob Brown",
+        "email": "bob.brown@example.com",
+        "department": "Finance",
+        "position": "Accountant",
+        "status": "Active"
+    },
+    {
+        "employee_id": "E005",
+        "name": "Carol White",
+        "email": "carol.white@example.com",
+        "department": "Finance",
+        "position": "CFO",
+        "status": "Active"
+    }
+]

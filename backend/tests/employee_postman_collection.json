@@ -1,0 +1,158 @@
+{
+  "info": {
+    "_postman_id": "employee-management-collection",
+    "name": "Employee Management System API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add Employees",
+      "item": [
+        {
+          "name": "Add Jane Doe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": \"E002\",\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane.doe@example.com\",\n  \"department\": \"Operations\",\n  \"position\": \"Project Manager\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/employees/employee",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["employees", "employee"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Employee added successfully\", function () {",
+                  "    pm.expect(pm.response.json().message).to.eql(\"Employee added successfully\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add John Doe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": \"E001\",\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"department\": \"IT\",\n  \"position\": \"Developer\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/employees/employee",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["employees", "employee"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Employee added successfully\", function () {",
+                  "    pm.expect(pm.response.json().message).to.eql(\"Employee added successfully\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Bob Brown",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": \"E004\",\n  \"name\": \"Bob Brown\",\n  \"email\": \"bob.brown@example.com\",\n  \"department\": \"Finance\",\n  \"position\": \"Accountant\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/employees/employee",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["employees", "employee"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Employee added successfully\", function () {",
+                  "    pm.expect(pm.response.json().message).to.eql(\"Employee added successfully\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Carol White",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": \"E005\",\n  \"name\": \"Carol White\",\n  \"email\": \"carol.white@example.com\",\n  \"department\": \"Finance\",\n  \"position\": \"CFO\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/employees/employee",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["employees", "employee"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Employee added successfully\", function () {",
+                  "    pm.expect(pm.response.json().message).to.eql(\"Employee added successfully\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
