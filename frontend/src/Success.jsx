@@ -13,7 +13,7 @@ const Success = () => {
     <div className="success-container">
       <h1>Login Successful!</h1>
       <p>Welcome to the Employee Management System.</p>
-      <button onClick={handleGoHome} className="success-btn">Go to Home</button>
+      <button onClick={handleGoHome} className="success-btn">Go back!</button>
     </div>
   );
 };

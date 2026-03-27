@@ -10,6 +10,7 @@ from app.routes.employee_routes import router as employee_router
 from app.schemas.employee_schema import UserCreate, UserResponse
 from app.model.employee_model import add_user, get_user_by_username, get_user_by_email, hash_password
 from fastapi import Body
+from fastapi.middleware.cors import CORSMiddleware
 from app.utils.utils import (
 	oauth2_scheme,
 	create_access_token,
@@ -30,6 +31,15 @@ async def lifespan(app: FastAPI):
 	yield
 
 app = FastAPI(title="Employee Management System API", version="1.0.0", lifespan=lifespan)
+
+# CORS setup to allow frontend (Vite) to communicate with backend
+app.add_middleware(
+	CORSMiddleware,
+	allow_origins=["http://localhost:5173"],
+	allow_credentials=True,
+	allow_methods=["*"] ,
+	allow_headers=["*"]
+)
 
 # Insert an example employee if not present
 def insert_example_employee():

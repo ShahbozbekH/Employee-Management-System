@@ -323,6 +323,7 @@
 .success-container h1 {
   color: #38a169;
   margin-bottom: 16px;
+  font-size: 2rem;
 }
 .success-container p {
   color: #22223b;

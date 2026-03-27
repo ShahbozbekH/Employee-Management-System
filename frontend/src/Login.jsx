@@ -22,13 +22,20 @@ export default function Login({ onLogin }) {
     const errors = validate();
     if (Object.keys(errors).length > 0) return;
     try {
-      const response = await axios.post('/api/login', { username, password });
-      const { token, role } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-      setError('');
-      if (onLogin) onLogin();
-      navigate('/'); // Redirect to home page after login (for test compatibility)
+      const params = new URLSearchParams();
+      params.append('username', username.trim());
+      params.append('password', password.trim());
+      const response = await axios.post('http://localhost:8000/login', params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      if (response.status === 200) {
+        const { access_token, role } = response.data;
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('role', role);
+        setError('');
+        if (onLogin) onLogin();
+        navigate('/success'); // Redirect to success page after login
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
